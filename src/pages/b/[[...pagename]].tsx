@@ -25,11 +25,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const categoriesTree: CategoryTreeResponse = await getCategoryTree()
-
   const page = await builder
     .get('page', {
       userAttributes: {
         urlPath: `/${pagename}`,
+      },
+      options: {
+        includeUnpublished: true
       },
     })
     .toPromise()

@@ -1,60 +1,138 @@
-<h2 align="center">KiboCommerce & Next.JS & BuilderIO</h2>
+# Next.js + KiboCommerce + Builder.io starter kit
 
-<p align="center">
-This is a headless ecommerce starter kit for KiboCommerce platform using Next.JS and BuilderIO<br>
-</p>
+The ultimate starter for headless KiboCommerce stores.
 
-### Features
+<!-- Demo live at: [headless.builders](https://headless.builders/) -->
 
-- Performant by default
-- SEO Ready
-- Internationalization
-- Responsive
+## Goals and Features
+
+- Ultra high performance
+- SEO optimized
+- Themable
+- Personalizable (internationalization, a/b testing, etc)
+- Builder.io Visual CMS integrated
 - UI Components built on top of Material UI 5
 - Theming
 - KiboCommerce data hooks
 - PWA Ready
 - Omni Channel Capability (Ship to home and Pickup in Store support)
-- BuilderIO integration
+
+## Table of contents
+
+- [Getting Started](#getting-started)
+  - [1: Create an account for Builder.io](#1-create-an-account-for-builderio)
+  - [2: Your Builder.io private key](#2-your-builderio-private-key)
+  - [3: Clone this repository and initialize a Builder.io space](#3-clone-this-repository-and-initialize-a-builderio-space)
+  - [4. KiboCommerce store](#4-kibocommerce-store)
+  - [5. Connecting Builder to KiboCommerce](#5-connecting-builder-to-kibocommerce)
+  - [6. Configure the project to talk to KiboCommerce](#6-configure-the-project-to-talk-to-kibocommerce)
+  - [7. Up and Running!](#7-up-and-running)
+- [Deploy](#deploy)
+
+<!-- markdown-toc end -->
 
 ## Getting Started
 
-1. Clone this repo
+**Pre-requisites**
 
-```bash
-git clone https://github.com/KiboSoftware/nextjs-builderio-starter-storefront.git
+This guide will assume that you have the following software installed:
+
+- nodejs (>=12.0.0)
+- npm
+- git
+
+You should already have a [KiboCommerce](https://kibocommerce.com/) account and store created before starting as well.
+
+**Introduction**
+
+This starter kit is everything you need to get your own self hosted
+Next.js project powered by Builder.io for content and KiboCommerce as an
+e-commerce back office.
+
+After following this guide you will have
+
+- A Next.js app, ready to deploy to a hosting provider of your choice
+- Pulling live collection and product information from KiboCommerce
+- Powered by the Builder.io visual CMS
+
+### 1: Create an account for Builder.io
+
+Before we start, head over to Builder.io and [create an account](https://builder.io/signup).
+
+### 2: Your Builder.io private key
+
+Head over to your [organization settings page](https://builder.io/account/organization?root=true) and create a
+private key, copy the key for the next step.
+
+- Visit the [organization settings page](https://builder.io/account/organization?root=true), or select
+  an organization from the list
+
+![organizations drop down list](./docs/images/builder-io-organizations.png)
+
+- Click "Account" from the left hand sidebar
+- Click the edit icon for the "Private keys" row
+- Copy the value of the auto-generated key, or create a new one with a name that's meaningful to you
+
+![Example of how to get your private key](./docs/images/private-key-flow.png)
+
+### 3: Clone this repository and initialize a Builder.io space
+
+Next, we'll create a copy of the starter project, and create a new
+[space](https://www.builder.io/c/docs/spaces) for it's content to live
+in.
+
+In the example below, replace `<private-key>` with the key you copied
+in the previous step, and change `<space-name>` to something that's
+meaningful to you -- don't worry, you can change it later!
+
+```
+git clone https://github.com/BuilderIO/kibocommerce-nextjs-starter.git
+cd kibocommerce-nextjs-starter
+
+unzip builder
+
+npm install --global "@builder.io/cli"
+
+builder create --key "<private-key>" --name "<space-name>" --debug
 ```
 
-2. Change into directory and install dependencies
+If this was a success you should be greeted with a message that
+includes a public API key for your newly minted Builder.io space.
+
+_Note: This command will also publish some starter builder.io cms
+content from the ./builder directory to your new space when it's
+created._
 
 ```bash
-npm install
+  ____            _   _       _                     _                    _   _ 
+ | __ )   _   _  (_) | |   __| |   ___   _ __      (_)   ___       ___  | | (_)
+ |  _ \  | | | | | | | |  / _` |  / _ \ | '__|     | |  / _ \     / __| | | | |
+ | |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
+ |____/   \__,_| |_| |_|  \__,_|  \___| |_|    (_) |_|  \___/     \___| |_| |_|
+                                                                               
+|████████████████████████████████████████| getting space settings | 2/2
+|████████████████████████████████████████|  product-page-footer: ./builder/product-page-footer/hammock-footer.json  | 
+|████████████████████████████████████████|  page: ./builder/page/homepage.json  | 1/1
+
+
+Your new space "next.js kibo starter" public API Key: 012345abcdef0123456789abcdef0123
 ```
 
-3. Copy .env template
+Copy the public API key ("012345abcdef0123456789abcdef0123" in the example above) for the next step.
 
-```bash
-cp .env.template .env.local
+This starter project uses dotenv files to configure environment variables.
+Open the files [.env.development](./.env.development) and
+[.env.production](./.env.production) in your favorite text editor, and
+set the value of `BUILDER_PUBLIC_KEY` to the public key you just copied.
+You can ignore the other variables for now, we'll set them later.
+
+```diff
++ BUILDER_IO_API_KEY=012345abcdef0123456789abcdef0123
+- BUILDER_IO_API_KEY=
+# ... your other credentials
 ```
 
-4. Configure env variables for your Kibo Commerce environment
-5. Start Dev server
-
-```bash
-npm run dev
-```
-
-## Configuration
-
-.env example
-
-```bash
-KIBO_API_HOST=t1234-s1234.sandbox.mozu.com
-KIBO_AUTH_HOST=home.mozu.com
-KIBO_CLIENT_ID=KIBO_APP.1.0.0.Release
-KIBO_SHARED_SECRET=12345_Secret
-BUILDER_IO_API_KEY=12345_Your_API_Key
-```
+### 4. KiboCommerce store
 
 The following data is required to configure the storefront to communicate with your Kibo API Client.
 
@@ -65,84 +143,53 @@ The following data is required to configure the storefront to communicate with y
 - `builderIOApiKey` - Unique API key used to authenticate your Builder IO
 
 Visit [Kibo documentation](https://apidocs.kibong-perf.com/?spec=graphql#auth) for more details on API authentication
+### 5. Connecting Builder to KiboCommerce
 
-## Useful Commands
+Access your newly created space by selecting it from the [list of spaces](https://builder.io/spaces?root=true)
+in your organization.
+
+You should be greeted by a modal asking for various your storefront Access toke (from preview step) and your store domain, this will allow Builder.io to communicate with your store API:
+
+![Example of where the KiboCommerce API keys map to Builder settings](https://cdn.builder.io/api/v1/image/assets%2F1f098a44b17d4df688d2afdc8a10ac7d%2Fc11b870efad943868b244dca7ec91625)
+
+Fill in the required keys and press "Connect your KiboCommerce Store"!
+
+### 6. Configure the project to talk to KiboCommerce
+
+Open up [.env.template](./.env.template), you will see which keys you will have to configure to have access to your store. When you have all of the required keys, your `.env` file should look like this:
 
 ```bash
-npm run dev # Start dev server
-npm run build # Run production build
-npm run start # Run production start
-npm run generate-types # generate typescript Kibo API types from GraphQL Schema
-npm run storybook # start storybook for
-npm run test # run unit / integration tests
+KIBO_API_HOST=t1234-s1234.sandbox.mozu.com
+KIBO_AUTH_HOST=home.mozu.com
+KIBO_CLIENT_ID=KIBO_APP.1.0.0.Release
+KIBO_SHARED_SECRET=12345_Secret
+
+BUILDER_IO_API_KEY=12345_Your_API_Key
 ```
 
-## Built with
+### 7. Up and Running!
 
-- Framework - [Next.JS](https://nextjs.org/docs)
-- Component Library - [Material UI 5](https://mui.com/material-ui/getting-started/overview/)
-- Testing - [Jest](https://jestjs.io/docs/getting-started)
-- Data Fetching / State Management - [React Query](https://react-query-v3.tanstack.com/overview)
-- Localization - [Next i18Next](https://github.com/i18next/next-i18next)
+The hard part is over, all you have to do is start up the project now.
 
-## BuilderIO Content Creation
+```bash
+npm install
+npm run dev
+```
 
-- Login to BuilderIO
-- 1. Create account
-- 2. Login to BuilderIO
+This will start a server at `http://localhost:3000`.
 
-- Create Space
-- 1. After Login create Space (https://builder.io/spaces)
+### 8. Start building
 
-- Integrate with Kibo-commerce plugin
-- 1. Open Space
-- 2. Click on Integrations option
-- 3. Click on Kibo-commerce plugin and provide your secrets and connect the plugin
+Now that we have everything setup, start building and publishing pages on builder.io, for a demo on building something similar to the [demo homepage](https://headless.builders), follow the steps in this [short video](https://www.loom.com/share/9b947acbbf714ee3ac6c319c130cdb85)
 
-- Run the application (if not running already)
-  npm run dev
+## Deployment Options
 
-- Create Page Model
-- 1. Click on Models
-- 2. Click on +Create Model button
+You can deploy this code anywhere you like - you can find many deployment options for Next.js [here](https://nextjs.org/docs/deployment). The following options support one click installs and are super easy to start with:
 
-  - 2.1. Select Page option
-  - 2.2. Provide Page as name
-  - 2.3. Open Page model just created and set http://localhost:3000 as Preview URL
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2FBuilderIO%2Fkibocommerce-nextjs-starter)
 
-- Create Section Model
-- 1. Click on Models
-- 2. Click on +Create Model button
+- Vercel: for more information check [Vercel docs on Next.js deployments](https://vercel.com/docs/next.js/overview) Or try the one click install by clicking the button above.
 
-  - 2.1. Select Section option
-  - 2.2. Provide Kibosection as name
-  - 2.3. Open Kibosection
-  - 2.4. +New Custom Field button
-  - 2.5. Create Slug as text fild
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/BuilderIO/kibocommerce-nextjs-starter)
 
-- Create Content for HomePage
-
-  1. Click on Content option
-  2. Click on +New button and select Page option
-  3. Provide Homepage as name and / as url
-  4. Open Homepage, you will see following Custom Components inside Page
-
-     - 4.1. Small banner
-     - 4.2. Kibo hero carousel
-     - 4.3. Product recommendations
-     - 4.4. CMS home page products
-     - 4.5. Content tile
-
-     Configure above components as per your need.
-
-- Creating Content for Product Details Page
-  1. Click on Account Settings
-  2. Edit Custom targeting attributes and add slug as string
-  3. Click on Content option
-  4. Select Page from Page Models
-  5. Create Page ex. BackP_004
-  6. Click on Edit Targeting and add Slug is BackP_004
-
-## Contributions
-
-All contributions welcome!
+- Netlify: For more information check [Netlify docs on Next.js deployments](https://www.netlify.com/blog/2020/11/30/how-to-deploy-next.js-sites-to-netlify/) Or try the one click install by clicking the button above.

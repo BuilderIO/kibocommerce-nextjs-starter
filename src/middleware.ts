@@ -13,7 +13,9 @@ export function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
+
     const homeUrl = new URL('/', request.url)
+    console.log('homeUrl' , homeUrl)
     return NextResponse.redirect(homeUrl)
   }
 }

@@ -44,9 +44,17 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     .get('kibosection', { userAttributes: { slug: productCode } })
     .promise()
 
+  const content = await builder
+    .get('product-page-footer', { userAttributes: {
+      urlPath: `/product/${productCode}`,
+      product: productCode,
+    } })
+    .promise()
+
   return {
     props: {
       product,
+      content: content || null,
       categoriesTree,
       ...(await serverSideTranslations(locale as string, ['common'])),
     },
@@ -67,7 +75,7 @@ export async function getStaticPaths() {
 }
 
 const ProductDetailPage: NextPage = (props: any) => {
-  const { product, section } = props
+  const { product, section, content } = props
   const { isFallback } = useRouter()
 
   if (isFallback) {
@@ -80,6 +88,8 @@ const ProductDetailPage: NextPage = (props: any) => {
       <ProductDetailTemplate product={product} breadcrumbs={breadcrumbs}>
         {section && <BuilderComponent model="pdpsection" content={section} />}
       </ProductDetailTemplate>
+
+      {content && <BuilderComponent model="product-page-footer" content={content} />}
     </>
   )
 }

@@ -375,12 +375,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const page = await builder
     .get('page', {
+      options: {
+        includeUnpublished: true
+      },
       userAttributes: {
         urlPath: '/',
       },
     })
     .toPromise()
-
   return {
     props: {
       page: page || null,
