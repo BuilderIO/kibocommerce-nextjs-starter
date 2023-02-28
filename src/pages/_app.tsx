@@ -29,6 +29,8 @@ import {
 import { footerConfig as footerProps } from '@/lib/constants'
 import type { NextPageWithLayout } from '@/lib/types'
 
+import '../../components/builder/register'
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
