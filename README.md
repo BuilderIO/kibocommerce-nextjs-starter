@@ -2,7 +2,7 @@
 
 The ultimate starter for headless KiboCommerce stores.
 
-Demo live at: [kibo-builder-starter](https://kibo-builder-starter.vercel.app)
+Demo live at: [kibo-builder-starter](https://next-kibo-starter.vercel.app/)
 
 ## Goals and Features
 
