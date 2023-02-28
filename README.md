@@ -2,7 +2,7 @@
 
 The ultimate starter for headless KiboCommerce stores.
 
-<!-- Demo live at: [headless.builders](https://headless.builders/) -->
+Demo live at: [kibo-builder-starter](https://kibo-builder-starter.vercel.app)
 
 ## Goals and Features
 
@@ -180,7 +180,7 @@ This will start a server at `http://localhost:3000`.
 
 ### 8. Start building
 
-Now that we have everything setup, start building and publishing pages on builder.io, for a demo on building something similar to the [demo homepage](https://headless.builders), follow the steps in this [short video](https://www.loom.com/share/9b947acbbf714ee3ac6c319c130cdb85)
+Now that we have everything setup, start building and publishing pages on builder.io.
 
 ## Deployment Options
 
