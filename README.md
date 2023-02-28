@@ -110,9 +110,10 @@ created._
  | |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
  |____/   \__,_| |_| |_|  \__,_|  \___| |_|    (_) |_|  \___/     \___| |_| |_|
                                                                                
-|████████████████████████████████████████| getting space settings | 2/2
+|████████████████████████████████████████| getting space settings | 3/3
 |████████████████████████████████████████|  product-page-footer: ./builder/product-page-footer/hammock-footer.json  | 
-|████████████████████████████████████████|  page: ./builder/page/homepage.json  | 1/1
+|████████████████████████████████████████|  homepage: ./builder/homepage/home.json  | 1/1
+|████████████████████████████████████████|  page: ./builder/page/random.json  | 2/2
 
 
 Your new space "next.js kibo starter" public API Key: 012345abcdef0123456789abcdef0123
